@@ -11,4 +11,5 @@ const firebaseConfig = {
 };
 
 export default firebase.initializeApp(firebaseConfig);
+export const firebaseInstatance = firebase;
 export const authService = firebase.auth();
