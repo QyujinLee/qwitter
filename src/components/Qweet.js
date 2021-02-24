@@ -52,6 +52,13 @@ const Qweet = ({ qweetObj, isOwner }) => {
             ) : (
                 <>
                     <h4>{qweetObj.text}</h4>
+                    {qweetObj.attachmentUrl && (
+                        <img
+                            src={qweetObj.attachmentUrl}
+                            width="50px"
+                            height="50px"
+                        />
+                    )}
                     {isOwner && (
                         <>
                             <button onClick={onDeleteClick}>
