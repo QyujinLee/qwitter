@@ -1,4 +1,4 @@
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import React, { useState } from "react";
 
 const Qweet = ({ qweetObj, isOwner }) => {
@@ -13,6 +13,7 @@ const Qweet = ({ qweetObj, isOwner }) => {
         if (ok) {
             // delete qweet
             await dbService.doc(`qweets/${qweetObj.id}`).delete();
+            await storageService.refFromURL(qweetObj.attachmentUrl).delete();
         }
     };
 
@@ -57,6 +58,7 @@ const Qweet = ({ qweetObj, isOwner }) => {
                             src={qweetObj.attachmentUrl}
                             width="50px"
                             height="50px"
+                            alt={qweetObj.id}
                         />
                     )}
                     {isOwner && (

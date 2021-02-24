@@ -36,7 +36,7 @@ const Home = ({ userObj }) => {
     const onSubmit = async (e) => {
         e.preventDefault();
         let attachmentUrl = "";
-        if (attachment != "") {
+        if (attachment !== "") {
             const attachmentRef = storageService
                 .ref()
                 .child(`${userObj.uid}/${uuidv4()}`);
@@ -96,7 +96,12 @@ const Home = ({ userObj }) => {
                 <input type="submit" value="Qweet" onClick={onSubmit} />
                 {attachment && (
                     <div>
-                        <img src={attachment} width="50px" height="50px" />
+                        <img
+                            src={attachment}
+                            width="50px"
+                            height="50px"
+                            alt={qweet.id}
+                        />
                         <button onClick={onClearAttachment}>Clear</button>
                     </div>
                 )}
