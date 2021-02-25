@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 const Home = ({ userObj }) => {
     const [qweet, setQweet] = useState("");
     const [qweets, setQweets] = useState([]);
-    const [attachment, setAttachment] = useState();
+    const [attachment, setAttachment] = useState("");
 
     // 아래와 같은 방법은 오래된 데이터를 가져온다
     // const getQweets = async () => {
