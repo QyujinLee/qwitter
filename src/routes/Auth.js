@@ -1,111 +1,50 @@
-import { authService, firebaseInstatance } from "fbase";
-import React, { useState } from "react";
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faTwitter,
+    faGoogle,
+    faGithub,
+} from '@fortawesome/free-brands-svg-icons';
+import { authService, firebaseInstance } from 'fbase';
+import AuthForm from 'components/AuthForm';
 
 const Auth = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [newAccount, setNewAccount] = useState(true);
-    const [error, setError] = useState("");
-
-    // 이메일 및 비밀번호 변경 시 이벤트
-    const onChange = (e) => {
-        const {
-            target: { name, value },
-        } = e;
-        if (name === "email") {
-            setEmail(value);
-        } else if (name === "password") {
-            setPassword(value);
-        }
-    };
-
-    // 계정 생성 또는 로그인 버튼 이벤트
-    const onSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            let data;
-            if (newAccount) {
-                // create account
-                data = await authService.createUserWithEmailAndPassword(
-                    email,
-                    password
-                );
-            } else {
-                // log in
-                data = await authService.signInWithEmailAndPassword(
-                    email,
-                    password
-                );
-            }
-
-            console.log(data);
-        } catch (error) {
-            setError(error.message);
-        }
-    };
-
-    // 계정 생성 및 로그인 상태값 변화 토글
-    const toggleAccount = () => {
-        setNewAccount((prev) => !prev);
-    };
-
-    // 깃헙, 구글 로그인 클릭 이벤트
-    const onSocialClick = async (e) => {
+    const onSocialClick = async (event) => {
         const {
             target: { name },
-        } = e;
+        } = event;
         let provider;
-
-        if (name === "google") {
-            provider = new firebaseInstatance.auth.GoogleAuthProvider();
-        } else if (name === "github") {
-            provider = new firebaseInstatance.auth.GithubAuthProvider();
+        if (name === 'google') {
+            provider = new firebaseInstance.auth.GoogleAuthProvider();
+        } else if (name === 'github') {
+            provider = new firebaseInstance.auth.GithubAuthProvider();
         }
-
-        const data = await authService.signInWithPopup(provider);
-
-        console.log(data);
+        await authService.signInWithPopup(provider);
     };
-
     return (
-        <div>
-            <form onSubmit={onSubmit}>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={onChange}
-                    required
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={onChange}
-                    required
-                />
-                <input
-                    type="submit"
-                    value={newAccount ? "Create Account" : "Sign In"}
-                />
-                {error}
-            </form>
-            <span onClick={toggleAccount}>
-                {newAccount ? "Sign In" : "Create Accout"}
-            </span>
-            <div>
-                <button name="google" onClick={onSocialClick}>
-                    Continue with Google
+        <div className="authContainer">
+            <FontAwesomeIcon
+                icon={faTwitter}
+                color={'#04AAFF'}
+                size="3x"
+                style={{ marginBottom: 30 }}
+            />
+            <AuthForm />
+            <div className="authBtns">
+                <button
+                    onClick={onSocialClick}
+                    name="google"
+                    className="authBtn">
+                    Continue with Google <FontAwesomeIcon icon={faGoogle} />
                 </button>
-                <button name="github" onClick={onSocialClick}>
-                    Continue with Github
+                <button
+                    onClick={onSocialClick}
+                    name="github"
+                    className="authBtn">
+                    Continue with Github <FontAwesomeIcon icon={faGithub} />
                 </button>
             </div>
         </div>
     );
 };
-
 export default Auth;
